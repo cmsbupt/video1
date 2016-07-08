@@ -1,11 +1,12 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ldecod", "ldecod_vc9.vcxproj", "{56238D26-B9F5-42F7-9230-009B790FE003}"
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ldecod", "ldecod_vc9.vcproj", "{56238D26-B9F5-42F7-9230-009B790FE003}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0AE501D4-AEC8-4952-9177-7D8DBE11F4F2} = {0AE501D4-AEC8-4952-9177-7D8DBE11F4F2}
+	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lcommon", "lcommon_vc9.vcxproj", "{0AE501D4-AEC8-4952-9177-7D8DBE11F4F2}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lcommon", "lcommon_vc9.vcproj", "{0AE501D4-AEC8-4952-9177-7D8DBE11F4F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

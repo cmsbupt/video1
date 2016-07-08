@@ -422,6 +422,126 @@ int main(int argc, char **argv)
     hd->eos = 0;
 
     init_conf(argc, argv);
+#if EXTRACT
+    p_sps = NULL;
+    p_pps = NULL;
+    p_pic_sps = NULL;    //每个pic打印一次sps
+    p_mv_col = NULL;     //时域mv信息
+    p_slice_bit = NULL;  //提取slice的比特流
+    p_slice = NULL;      //提取slice的信息 QP
+    p_lcu = NULL;
+    p_lcu_coeff = NULL;
+    p_lcu_mv = NULL;
+    p_aec = NULL;
+#if EXTRACT_lcu_info_debug   //控制lcu debug信息是否打印
+    p_lcu_debug = NULL;
+#endif
+#if EXTRACT_PIC_SAO   //2016-5-20 提取整帧的sao最后参数
+    p_pic_sao = NULL;
+#endif
+#if  EXTRACT_PIC_DF_BS   //2016-6-1 提取整帧的去块滤波Bs参数
+    p_pic_df_bs = NULL;
+#endif
+#if  EXTRACT_PIC_YUV_PRED  //2016-5-23 提取整帧图像的经过预测后的数据
+    p_pic_yuv_pred = NULL;
+#endif
+#if EXTRACT_PIC_YUV_TQ     //2016-5-23 提取整帧图像的经过预测+残差后的数据
+    p_pic_yuv_tq = NULL;
+#endif
+#if EXTRACT_PIC_YUV_DF     //2016-5-23 提取整帧图像的经过去块后的数据
+    p_pic_yuv_df = NULL;
+#endif
+#if EXTRACT_PIC_YUV_SAO    //2016-5-23 提取整帧图像的经过sao处理后的数据
+    p_pic_yuv_sao = NULL;
+#endif
+#if EXTRACT_PIC_YUV_ALF   //2016-5-23 提取整帧图像的经过sao处理后的数据
+    p_pic_yuv_alf = NULL;
+#endif
+    spsNum = 0;
+    spsNewStart = -1;
+    p_sps = NULL;
+    printf("infile=%s\n", infile);
+    sprintf(newdir, "./%s/", infile);
+    //system(newdir);
+    mkdir(newdir, 0777);
+    printf("creat dir:%s\n", newdir);
+
+
+    sprintf(newdir, "./%s/sps", infile);
+    //system(newdir);
+    mkdir(newdir, 0777);
+    printf("creat dir:%s\n", newdir);
+
+#if EXTRACT_PIC_SAO   //2016-5-20 提取整帧的sao最后参数
+    sprintf(newdir, "./%s/saoinfo", infile);
+    //system(newdir);
+    mkdir(newdir, 0777);
+    printf("creat dir:%s\n", newdir);
+#endif
+
+#if  EXTRACT_PIC_DF_BS   //2016-6-1 提取整帧的去块滤波Bs参数
+    sprintf(newdir, "./%s/bsinfo", infile);
+    //system(newdir);
+    mkdir(newdir, 0777);
+    printf("creat dir:%s\n", newdir);
+#endif 
+    sprintf(newdir, "./%s/aec", infile);
+    mkdir(newdir, 0777);
+    printf("creat dir:%s\n", newdir);
+
+    sprintf(newdir, "./%s/bitstream", infile);
+    //system(newdir);
+    mkdir(newdir, 0777);
+    printf("creat dir:%s\n", newdir);
+
+    sprintf(newdir, "./%s/PicInfo", infile);
+    //system(newdir);
+    mkdir(newdir, 0777);
+    printf("creat dir:%s\n", newdir);
+
+#if EXTRACT_PIC_YUV_SAO
+    sprintf(newdir, "./%s/img", infile);
+    //system(newdir);
+    mkdir(newdir, 0777);
+    printf("creat dir:%s\n", newdir);
+#endif
+
+    sprintf(newdir, "./%s/slice_info", infile);
+    //system(newdir);
+    mkdir(newdir, 0777);
+    printf("creat dir:%s\n", newdir);
+
+
+
+    sprintf(newdir, "./%s/mv_refinfo", infile);
+    //system(newdir);
+    mkdir(newdir, 0777);
+    printf("creat dir:%s\n", newdir);
+
+
+    sprintf(newdir, "./%s/lcu_info", infile);
+    //system(newdir);
+    mkdir(newdir, 0777);
+    printf("creat dir:%s\n", newdir);
+
+#if EXTRACT_lcu_info_debug   //控制lcu debug信息是否打印  
+    sprintf(newdir, "./%s/lcu_debug", infile);
+    //system(newdir);
+    mkdir(newdir, 0777);
+    printf("creat dir:%s\n", newdir);
+#endif
+
+    sprintf(newdir, "./%s/lcu_coeff", infile);
+    //system(newdir);
+    mkdir(newdir, 0777);
+    printf("creat dir:%s\n", newdir);
+
+    sprintf(newdir, "./%s/lcu_mv", infile);
+    //system(newdir);
+    mkdir(newdir, 0777);
+    printf("creat dir:%s\n", newdir);
+    sliceNum = -1;
+#endif
 
     OpenBitstreamFile(input->infile);
 
@@ -775,6 +895,28 @@ void init_conf(int numpar, char **config_str)
         }
     }
 
+#if EXTRACT
+    /*
+    *****************************************************
+    输入文件名
+    *****************************************************
+    */
+    strcpy(infile, input->infile);
+    i = 0;
+    while (infile[i])
+    {
+      if (infile[i] != '.')
+      {
+        i++;
+        continue;
+      }
+      else
+      {
+        infile[i] = '\0';
+        break;
+      }
+    }
+#endif
     fprintf(stdout, "--------------------------------------------------------------------------\n");
     fprintf(stdout, " Decoder config file                    : %s \n", config_str[1]);
     fprintf(stdout, "--------------------------------------------------------------------------\n");

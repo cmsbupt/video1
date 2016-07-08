@@ -337,6 +337,12 @@ void readWPM(SyntaxElement *se, DecodingEnvironmentPtr dep_dp, codingUnit *MB, i
         binIdx = min(binIdx + 1, 2);
     }
     se->value1 = act_sym;
+#if EXTRACT
+		EcuInfoInterSyntax[4] = se->value1; //wighted_skip_mode Table73 默认0	
+#if EXTRACT_lcu_info_BAC_inter
+	    fprintf(p_lcu,"wighted_skip_mode  %d  F skip,direct numRef=%d \n",se->value1,img->num_of_references);//wighted_skip_mode  
+#endif	    
+#endif	
 }
 
 void read_b_dir_skip(SyntaxElement *se, DecodingEnvironmentPtr dep_dp, codingUnit *currMB, int uiPosition)
@@ -510,8 +516,16 @@ void readcuTypeInfo(SyntaxElement *se, DecodingEnvironmentPtr dep_dp, codingUnit
         while (1) {
             if ((binidx == 5) && (currMB->ui_MbBitSize != MIN_CU_SIZE_IN_BIT)) {
                 symbol = biari_decode_final(dep_dp);
+#if EXTRACT_lcu_info_cutype_debug
+                //此时的act_sym是码字中连续0的个数
+                fprintf(p_lcu_debug, "cu_type_index act_sym=%d act_ctx=%d symbol=%d biari_decode_final\n", act_sym, act_ctx, symbol);//cu_type_index
+#endif
             } else {
                 symbol = biari_decode_symbol(dep_dp, pCTX + act_ctx);
+#if EXTRACT_lcu_info_cutype_debug
+                //此时的act_sym是码字中连续0的个数
+                fprintf(p_lcu_debug, "cu_type_index act_sym=%d act_ctx=%d symbol=%d\n", act_sym, act_ctx, symbol);//cu_type_index
+#endif	
             }
             binidx++;
 
@@ -532,6 +546,18 @@ void readcuTypeInfo(SyntaxElement *se, DecodingEnvironmentPtr dep_dp, codingUnit
                 break;
             }
         }
+
+#if EXTRACT_lcu_info_BAC
+		// 
+	  fprintf(p_lcu,"cu_type_index act_sym=%d\n",act_sym);//cu_type_index
+#endif	
+#if EXTRACT_lcu_info_BAC_inter
+		// 
+		fprintf(p_lcu,"cu_type_index act_sym=%d\n",act_sym);//cu_type_index
+#endif	
+#if EXTRACT			
+		EcuInfoInter[0]= act_sym;//cu_type_index
+#endif	
         if (((img->type == F_IMG)) || ((img->type == P_IMG))) {
             if (currMB->ui_MbBitSize == B8X8_IN_BIT) {
                 act_sym = MapPCUTypeMin[act_sym];
@@ -548,7 +574,18 @@ void readcuTypeInfo(SyntaxElement *se, DecodingEnvironmentPtr dep_dp, codingUnit
 
         curr_cuType = act_sym;
 
+#if EXTRACT_lcu_info_BAC
+		//´ËÊ±µÄact_symÊÇÂë×ÖÖÐÁ¬Ðø0µÄ¸öÊý
+		fprintf(p_lcu,"cu_type_index Map act_sym=%d\n",act_sym);//cu_type_index
+#endif
+
         //for AMP
+#if EXTRACT
+    EcuInfoInter[1]= -1;//shape_of_partion_index ÎÄµµ¶ÔÓ¦
+		//printf("EcuInfoInter[1]= -1\n");
+		//printf("currMB->ui_MbBitSize = %d\n",currMB->ui_MbBitSize );
+		//printf("B16X16_IN_BIT = %d\n",B16X16_IN_BIT );
+#endif 
         if (currMB->ui_MbBitSize >= B16X16_IN_BIT)
             if (img->inter_amp_enable) {
                 if (curr_cuType == 2 || curr_cuType == 3) {
@@ -2109,6 +2146,10 @@ int readSplitFlag(int uiBitSize)
     fprintf(hc->p_trace, "SplitFlag = %3d\n", currSE.value1);
     fflush(hc->p_trace);
 #endif
+#if EXTRACT_lcu_info_cutype_debug
+    //此时的act_sym是码字中连续0的个数
+    fprintf(p_lcu_debug, "readSplitFlag_AEC ctx=%d symbol=%d\n", ctx, symbol);//cu_type_index
+#endif	
 
     return currSE.value1;
 }

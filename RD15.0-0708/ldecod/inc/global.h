@@ -51,6 +51,332 @@
 #include "../../lcommon/inc/commonStructures.h"
 #include "../../lcommon/inc/commonVariables.h"
 
+
+#define EXTRACT 1  
+#if EXTRACT
+#define EXTRACT_SliceByteAscii_08X 1 //按照2个字节后1个空格 %02x 2016-3-14
+#define EXTRACT_08X 1
+#define EXTRACT_D 0
+
+
+#define EXTRACT_DPB_RCS 0
+#define EXTRACT_DPB 0
+#define EXTRACT_DPB_POC_B 1 // B 逆序打印
+#define EXTRACT_DPB_ColMV_B 1 // B 逆序打印
+#define EXTRACT_Coeff 0
+
+
+#define cms_dpb 0
+#define EXTRACT_lcu_info_BAC 0  //控制cu 信息是否打印
+#define EXTRACT_lcu_info_BAC_inter 0
+#define EXTRACT_F_MV_debug 0
+#define EXTRACT_MV_debug 0
+
+
+#define EXTRACT_lcu_info_debug 1  //控制lcu debug信息是否打印
+#define EXTRACT_lcu_info_mvp_debug 0  //控制lcu debug信息是否打印
+#define EXTRACT_lcu_info_cutype_debug 0  //控制lcu debug信息是否打印
+#define EXTRACT_lcu_info_cutype_aec_debug 0  //控制lcu debug信息是否打印
+#define EXTRACT_lcu_info_coeff_debug 1  //控制lcu debug信息是否打印
+#define EXTRACT_lcu_info_cutype_aec_debug2 0  //控制lcu debug信息是否打印
+#define EXTRACT_lcu_info_debug_IntraPred_UV 0  //控制lcu debug信息是否打印
+
+
+#define EXTRACT_lcu_info_debug_intra 1  //控制lcu debug信息是否打印
+#define EXTRACT_PIC_SAO 1  //2016-5-20 提取整帧的sao最后参数
+#define EXTRACT_PIC_SAO_debug 0 
+
+#define EXTRACT_PIC_YUV_PRED 1  //2016-5-23 提取整帧图像的经过预测后的数据
+#define EXTRACT_PIC_YUV_TQ 1  //2016-5-23 提取整帧图像的经过预测+残差后的数据
+#define EXTRACT_PIC_YUV_DF 0  //2016-5-23 提取整帧图像的经过去块后的数据
+#define EXTRACT_PIC_YUV_SAO 0  //2016-5-23 提取整帧图像的经过sao处理后的数据
+#define EXTRACT_PIC_YUV_ALF 0  //2016-5-23 提取整帧图像的经过sao处理后的数据
+
+
+#define EXTRACT_FULL 1  //2016-5-31 提取完整的参数
+
+#define EXTRACT_FULL_PPS  1 //2016-5-31 提取完整的参数
+#define EXTRACT_FULL_PPS_debug  0 //2016-5-31 提取完整的参数
+#define EXTRACT_FULL_PPS_ALF_final  0 //2016-5-31 提取完整的参数
+#define EXTRACT_FULL_PPS_ALF_debug  0 //2016-5-31 提取完整的参数
+#define EXTRACT_FULL_SLICE  1 //2016-5-31 提取完整的参数
+
+#define EXTRACT_PIC_DF_BS 1  //2016-6-1 提取整帧的去块滤波Bs参数
+#define EXTRACT_PIC_DF_BS_debug 0 
+#define EXTRACT_PIC_DF_BS_Print_1 1//2016-6-1 提取整帧的去块滤波Bs参数
+
+/*
+*************************************************************************************
+提取数据
+*************************************************************************************
+*/
+FILE *p_sps;
+FILE *p_pps;
+FILE *p_pic_sps;    //每个pic打印一次sps
+FILE *p_mv_col;     //时域mv信息
+FILE *p_slice_bit;  //提取slice的比特流
+FILE *p_slice;      //提取slice的信息 QP
+FILE *p_lcu;
+FILE *p_lcu_coeff;
+FILE *p_lcu_mv;
+FILE *p_aec;
+
+#if EXTRACT_lcu_info_debug   //控制lcu debug信息是否打印
+FILE *p_lcu_debug;
+#endif
+
+#if EXTRACT_PIC_SAO   //2016-5-20 提取整帧的sao最后参数
+FILE *p_pic_sao;
+#endif
+
+#if EXTRACT_PIC_YUV_PRED   //2016-5-23 提取整帧图像的经过预测后的数据
+int *pPicYPred;
+int *pPicUVPred[2];
+#endif
+#if  EXTRACT_PIC_DF_BS   //2016-6-1 提取整帧的去块滤波Bs参数
+FILE *p_pic_df_bs;
+//建立2个数组，分别存放垂直方向、水平方向的Bs值
+//垂直方向 picVerEdgeBsY[Height][Width / 8]; 每隔8个点有一个垂直边界
+//水平方向 picHorEdgeBsY[Height / 8][Width]; 每隔8个点有一个水平边界
+byte ** picVerEdgeBsY;
+byte ** picHorEdgeBsY;
+
+byte ** picVerEdgeBsCb;
+byte ** picHorEdgeBsCb;
+
+byte ** picVerEdgeBsCr;
+byte ** picHorEdgeBsCr;
+
+#endif
+
+#if  EXTRACT_PIC_YUV_PRED  //2016-5-23 提取整帧图像的经过预测后的数据
+FILE *p_pic_yuv_pred;
+#endif
+#if EXTRACT_PIC_YUV_TQ     //2016-5-23 提取整帧图像的经过预测+残差后的数据
+FILE *p_pic_yuv_tq;
+#endif
+#if EXTRACT_PIC_YUV_DF     //2016-5-23 提取整帧图像的经过去块后的数据
+FILE *p_pic_yuv_df;
+#endif
+#if EXTRACT_PIC_YUV_SAO    //2016-5-23 提取整帧图像的经过sao处理后的数据
+FILE *p_pic_yuv_sao;
+#endif
+#if EXTRACT_PIC_YUV_ALF   //2016-5-23 提取整帧图像的经过sao处理后的数据
+FILE *p_pic_yuv_alf;
+#endif
+
+#endif
+#if EXTRACT
+/*
+*************************************************************************
+提取数据所需变量
+*************************************************************************
+*/
+char newdir[100];//新建目录
+char filename[100];
+char infile[100];
+int  spsNum;
+int  spsNewStart;
+int  sliceNum;
+int  etr_slice_vertical_position;
+int  etr_slice_vertical_position_ext;
+int  etr_slice_horizontal_position;
+int  etr_slice_horizontal_position_ext;
+int  etr_fixed_slice_qp;
+int  etr_slice_qp;
+int  RefPicNum;
+int  lcuNum;
+int  lcuPosPixX, lcuPosPixY;//LCU 在图像中的像素坐标
+int  cuPosInLCUPixX, cuPosInLCUPixY;//CU 在LCU中的像素坐标
+                                    //int  puNumInCU;
+
+#if  EXTRACT_FULL  //2016-5-31 提取完整的参数
+int sps_progressive_sequence;
+int sps_field_coded_sequence;
+int sps_sample_precision;
+int sps_encoding_precision;
+int sps_aspect_ratio;
+int sps_frame_rate_code;
+int sps_bit_rate;
+int sps_low_delay;
+int sps_temporal_id_enable;
+int sps_bbv_buffer_size;
+int sps_weight_quant_enable;
+int sps_load_seq_weight_quant_data_flag;
+int sps_scene_picture_disable;
+int sps_secondary_transform_enable_flag;
+int sps_adaptive_loop_filter_enable;
+int sps_num_of_rcs;
+int sps_output_reorder_delay;
+int sps_cross_slice_loopfilter_enable;
+
+#if  EXTRACT_FULL_PPS  //2016-5-31 提取完整的参数
+int pps_loop_filter_disable;
+int pps_AlphaCOffset;
+int pps_BetaOffset;
+int pps_chroma_quant_param_delta_cb;
+int pps_chroma_quant_param_delta_cr;
+int pps_WeightQuantMatrix4x4[4][4];
+int pps_WeightQuantMatrix8x8[8][8];
+int pps_alf_filter_num_minus1;
+int pps_alf_region_distance[16];//16个
+int pps_AlfCoeffLuma[16][9];//16个region 每个有9个系数
+int pps_AlfCoeffChroma0[9];//U 有9个系数
+int pps_AlfCoeffChroma1[9];//V 9个系数
+int pps_AlfCoeffLuma_Final[16][9];//16个region 每个有9个系数 处理过后的
+int pps_AlfCoeffChroma0_Final[9];//U 有9个系数 每个有9个系数 处理过后的
+int pps_AlfCoeffChroma1_Final[9];//V 9个系数 每个有9个系数 处理过后的
+
+int pps_bbv_delay;
+int pps_time_code_flag;
+int pps_time_code;
+int pps_decode_order_index;
+int pps_temporal_id;
+int pps_picture_output_delay;
+int pps_random_access_decodable_flag;
+int pps_bbv_check_times;
+int pps_progressive_frame;
+int pps_top_field_first;
+int pps_repeat_first_field;
+int pps_use_rcs_flag;
+int pps_rcs_index;
+#endif
+
+
+#if  EXTRACT_FULL_SLICE  //2016-5-31 提取完整的参数
+int slice_slice_sao_enable[3];
+#endif
+#endif
+
+
+int  lcuSAOInfo[3][12];
+//[0-2]是3 个分量
+//lcuSAOInfo[i][0] 是0=off   1=BO 2=Edge
+//lcuSAOInfo[i][1-4] 是4个offset 有符号
+//lcuSAOInfo[i][5] 是区间模式时起始
+//lcuSAOInfo[i][6] 是区间模式时起始偏移 minus2
+//lcuSAOInfo[i][7] 是边缘模式时的类型0=0度，1=90度，2=135度，3=45度
+//lcuSAOInfo[i][8] 是merge FLAG,0 =noMerge,1=merge-left,2=merge-up
+
+int  cuInfoIntra[8];
+//0-3是亮度预测模式，
+//4是色度预测模式，
+//5是帧内transform split flag
+//6是帧内intra_pu_type_index  
+int  cuInfoInter[8];//
+int  puInfoInter[4][16];//4//4个pu,[pu index][ direction]
+                        //cuInfoInter[0]:是帧间预测方向：0,1,2,3,4 ->Sym,bipred,double_fwd,bck,single_fwd
+                        //cuInfoInter[1]:是帧间预测子类型	skip\direct下才有
+                        //P:
+                        //B:10种 Skip\Direct 下各有5种
+                        //F:12种 Skip\Direct 下各有6种参见表85/表91，0~9(或0~11)分别与”编码单元子类型”按由上至下的顺序一一对应
+
+int  EcuInfoInter[8];//
+                     //EcuInfoInter[0]= act_sym;//cu_type_index 文档对应
+                     //EcuInfoInter[1]= -1;//shape_of_partion_index 文档对应
+int  EcuInfoInterSyntax[64];//在每个CU 开始时进行初始化
+                            //EcuInfoInterSyntax[0] 存放句法cu_type_index			默认0, 对于I图像，不会传输，默认为0，对于P/B/F 需要传输，0=skip，1=direct ，2=2Nx2n,3=Hor,4=Ver,5=NxN,6=Intra
+                            //EcuInfoInterSyntax[1] 存放句法shape_of_partion_index	默认0,对于帧间PBF图像，且CU大于8x8,且允许AMP划分，且CU 是2划分，则需要进一步解析 PU的划分方式，
+                            //EcuInfoInterSyntax[2] 存放句法b_pu_type_index			默认0
+                            //EcuInfoInterSyntax[3] 存放句法f_pu_type_index Table74	默认0	
+                            //EcuInfoInterSyntax[4] 存放句法wighted_skip_mode		默认0		
+                            //EcuInfoInterSyntax[5] 存放句法F cu_subtype_index		默认0		
+                            //EcuInfoInterSyntax[6] 存放句法B cu_subtype_index		默认0		
+                            //EcuInfoInterSyntax[ 7-10] 存放句法B b_pu_type_index2 	NxN 划分时4个PU的预测方向
+                            //EcuInfoInterSyntax[11-14] 存放句法F f_pu_type_index2 	NxN 划分时4个PU的预测方向
+                            //EcuInfoInterSyntax[15-18] 存放句法前向PF pu_reference_index	4个PU的参考帧索引
+                            //EcuInfoInterSyntax[19]    存放句法F dir_multi_hypothesis		默认0		
+
+                            //EcuInfoInterSyntax[20] 存放句法PU 0:前向mvd_x		默认0		
+                            //EcuInfoInterSyntax[21] 存放句法PU 0:前向mvd_y		默认0		
+                            //EcuInfoInterSyntax[22] 存放句法PU 1:前向mvd_x		默认0		
+                            //EcuInfoInterSyntax[23] 存放句法PU 1:前向mvd_y		默认0		
+                            //EcuInfoInterSyntax[24] 存放句法PU 2:前向mvd_x		默认0		
+                            //EcuInfoInterSyntax[25] 存放句法PU 2:前向mvd_y		默认0		
+                            //EcuInfoInterSyntax[26] 存放句法PU 3:前向mvd_x		默认0		
+                            //EcuInfoInterSyntax[27] 存放句法PU 3:前向mvd_y		默认0		
+
+                            //EcuInfoInterSyntax[28] 存放句法PU 0:后向mvd_x		默认0		
+                            //EcuInfoInterSyntax[29] 存放句法PU 0:后向mvd_y		默认0		
+                            //EcuInfoInterSyntax[30] 存放句法PU 1:后向mvd_x		默认0		
+                            //EcuInfoInterSyntax[31] 存放句法PU 1:后向mvd_y		默认0		
+                            //EcuInfoInterSyntax[32] 存放句法PU 2:后向mvd_x		默认0		
+                            //EcuInfoInterSyntax[33] 存放句法PU 2:后向mvd_y		默认0		
+                            //EcuInfoInterSyntax[34] 存放句法PU 3:后向mvd_x		默认0		
+                            //EcuInfoInterSyntax[35] 存放句法PU 3:后向mvd_y		默认0		
+
+                            //EcuInfoInterSyntax[36] 存放句法CU ctp 	默认0		
+                            //EcuInfoInterSyntax[37] 存放句法CU transform_split_flag 	默认0		
+                            //EcuInfoInterSyntax[38] 存放句法CU cu_qp _delta
+                            //EcuInfoInterSyntax[39] 存放句法CU qp 	
+
+                            //EcuInfoInterSyntax[40-43] 存放句法后向PF pu_reference_index	4个PU的参考帧索引
+                            //EcuInfoInterSyntax[44]    存放句法CU ctp_zero_flag 	默认0		
+
+                            //cuInfoInter[0]:是帧间预测方向：0,1,2,3,4 ->Sym,bipred,double_fwd,bck,single_fwd
+                            //cuInfoInter[1]:是帧间预测子类型  skip\direct下才有
+                            //P:
+                            //B:10种 Skip\Direct 下各有5种
+                            //F:12种 Skip\Direct 下各有6种参见表85/表91，0~9(或0~11)分别与”编码单元子类型”按由上至下的顺序一一对应
+
+
+                            //1.6 MV解码数据
+int EcuInfoInterMv[64];//用于存放解码后的MV 信息
+                       //EcuInfoInterMv[0];//last_cu  当前LCU在图像中的位置，
+                       //{LCUaddr_y>>4, LCUaddr_x>>4}，各占16bits。
+                       //LCUaddr_y，LCUaddr_x表示像素点坐标。
+                       //EcuInfoInterMv[1];//last_cu 
+                       //EcuInfoInterMv[2];//CU position  y  CU position  x	,{CUaddr_y>>3, CUaddr_x>>3},
+                       //CUaddr_y，CUaddr_x  表示LCU内的像素点坐标。
+                       //EcuInfoInterMv[3];//log2CbSize  CU 的对数大小 4==> 16
+                       //EcuInfoInterMv[4];//CU pred_mode_flag  0-inter, 1-intra
+                       //EcuInfoInterMv[5];//CU part_mode CU的类型主要是划分
+                       //EcuInfoInterMv[6];//PU0: predFlagL0   01-list0; 10-list1; 11-Bi; 
+                       //EcuInfoInterMv[7];//PU0: predFlagL1   01-list0; 10-list1; 11-Bi; 
+                       //EcuInfoInterMv[8];//PU1: predFlagL0   01-list0; 10-list1; 11-Bi; 
+                       //EcuInfoInterMv[9];//PU1: predFlagL1   01-list0; 10-list1; 11-Bi;
+                       //EcuInfoInterMv[10];//PU2: predFlagL0   01-list0; 10-list1; 11-Bi; 
+                       //EcuInfoInterMv[11];//PU2: predFlagL1   01-list0; 10-list1; 11-Bi;		
+                       //EcuInfoInterMv[12];//PU3: predFlagL0   01-list0; 10-list1; 11-Bi; 
+                       //EcuInfoInterMv[13];//PU3: predFlagL1   01-list0; 10-list1; 11-Bi;
+
+                       //EcuInfoInterMv[14];//PU0: refIdxL0
+                       //EcuInfoInterMv[15];//PU0: refIdxL1
+                       //EcuInfoInterMv[16];//PU1: refIdxL0
+                       //EcuInfoInterMv[17];//PU1: refIdxL1
+                       //EcuInfoInterMv[18];//PU2: refIdxL0
+                       //EcuInfoInterMv[19];//PU2: refIdxL1
+                       //EcuInfoInterMv[20];//PU3: refIdxL0
+                       //EcuInfoInterMv[21];//PU3: refIdxL1
+
+                       //EcuInfoInterMv[22];//PU0: mvL0_x
+                       //EcuInfoInterMv[23];//PU0: mvL0_y
+                       //EcuInfoInterMv[24];//PU0: mvL1_x
+                       //EcuInfoInterMv[25];//PU0: mvL1_x
+
+                       //EcuInfoInterMv[26];//PU1: mvL0_x
+                       //EcuInfoInterMv[27];//PU1: mvL0_y
+                       //EcuInfoInterMv[28];//PU1: mvL1_x
+                       //EcuInfoInterMv[29];//PU1: mvL1_x
+
+                       //EcuInfoInterMv[30];//PU2: mvL0_x
+                       //EcuInfoInterMv[31];//PU2: mvL0_y
+                       //EcuInfoInterMv[32];//PU2: mvL1_x
+                       //EcuInfoInterMv[33];//PU2: mvL1_x
+
+                       //EcuInfoInterMv[34];//PU3: mvL0_x
+                       //EcuInfoInterMv[35];//PU3: mvL0_y
+                       //EcuInfoInterMv[36];//PU3: mvL1_x
+                       //EcuInfoInterMv[37];//PU3: mvL1_x
+
+                       //EcuInfoInterMv[38];//PU0: intra_luma_pred_mode
+                       //EcuInfoInterMv[39];//PU1: intra_luma_pred_mode
+                       //EcuInfoInterMv[40];//PU2: intra_luma_pred_mode
+                       //EcuInfoInterMv[41];//PU3: intra_luma_pred_mode
+                       //EcuInfoInterMv[42];//CU: intra_chroma_pred_mode
+
+                       //EcuInfoInterMv[43];//CU:  pu 个数		
+#endif
 void write_GB_frame(FILE *p_dec);
 
 
@@ -403,6 +729,7 @@ struct inp_par {
     int   profile_id;
     int   level_id;
     int   chroma_format;
+    //int   bbv_buffer_size;//debug cms add
     int   g_uiMaxSizeInBit;
     int   alpha_c_offset;
     int   beta_offset;

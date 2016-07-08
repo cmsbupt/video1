@@ -63,6 +63,10 @@
 #include "../../lcommon/inc/ComAdaptiveLoopFilter.h"
 #include "../../lcommon/inc/md5.h"
 #include "../../ldecod/inc/DecAdaptiveLoopFilter.h"
+#if EXTRACT
+  char * aPicTypeStr[6]={"I_IMG","P_IMG","B_IMG","BACKGROUND_IMG","F_IMG","BP_IMG"};
+//  char * aInterPredStr[5]={"FORWARD","BACKWARD","SYM","BID","DUAL"};
+#endif	
 void Copy_frame_for_ALF();
 #if ROI_M3264
 #include "pos_info.h"
@@ -128,6 +132,7 @@ int decode_one_frame(SNRParameters *snr)
 
     current_header = Header();
     DecideMvRange();  //rm52k
+	printf("current_header = Header(); img->tr=%d\n",img->tr);
 
     if (current_header == EOS) {
         return EOS;

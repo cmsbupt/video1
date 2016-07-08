@@ -95,6 +95,12 @@ void SequenceHeader(char *buf, int startcodepos, int length)
 #if INTERLACE_CODING
     hd->is_field_sequence           = u_v(1, "field_coded_sequence");
 #endif
+
+#if  EXTRACT_FULL   //2016-5-31 提取完整的参数
+  sps_progressive_sequence = progressive_sequence;
+  sps_field_coded_sequence = is_field_sequence;
+#endif
+
 #if HALF_PIXEL_COMPENSATION || HALF_PIXEL_CHROMA
     img->is_field_sequence = hd->is_field_sequence;
 #endif
@@ -112,6 +118,18 @@ void SequenceHeader(char *buf, int startcodepos, int length)
     } else { // other profile
         hd->sample_precision = u_v(3, "sample_precision");
     }
+#if  EXTRACT_FULL   //2016-5-31 提取完整的参数
+  if(input->sample_bit_depth == 8)
+    sps_encoding_precision = 1;//1-8bit 2-10bit
+  else
+    sps_encoding_precision = 2;//1-8bit 2-10bit
+
+  if (input->output_bit_depth == 8)
+    sps_sample_precision = 1;//1-8bit 2-10bit
+  else
+    sps_sample_precision = 2;//1-8bit 2-10bit
+
+#endif
     hd->aspect_ratio_information    = u_v(4, "aspect_ratio_information");
     hd->frame_rate_code             = u_v(4, "frame_rate_code");
 
@@ -121,20 +139,41 @@ void SequenceHeader(char *buf, int startcodepos, int length)
     hd->bit_rate_upper              = u_v(12, "bit_rate_upper");
     hd->low_delay                   = u_v(1, "low_delay");
     hd->marker_bit                  = u_v(1, "marker bit");
+#if  EXTRACT_FULL   //2016-5-31 提取完整的参数
+  sps_aspect_ratio    = hd->aspect_ratio_information;
+  sps_frame_rate_code = hd->frame_rate_code;
+  sps_bit_rate        = ((hd->bit_rate_upper<<18) + hd->bit_rate_lower);
+  sps_low_delay       = hd->low_delay;
+#endif
     //CHECKMARKERBIT
 #if M3480_TEMPORAL_SCALABLE
     hd->temporal_id_exist_flag      = u_v(1, "temporal_id exist flag");                           //get Extention Flag
 #endif
-    u_v(18, "bbv buffer size");
+#if  EXTRACT_FULL   //2016-5-31 提取完整的参数
+    sps_bbv_buffer_size = 0;
+#endif
+    sps_bbv_buffer_size =u_v(18, "bbv buffer size");
+
     input->g_uiMaxSizeInBit     = u_v(3, "Largest Coding Block Size");
+#if  EXTRACT_FULL   //2016-5-31 提取完整的参数
+    sps_temporal_id_enable = hd->temporal_id_exist_flag;
+#endif
 
 #if FREQUENCY_WEIGHTING_QUANTIZATION
     hd->weight_quant_enable_flag            = u_v(1, "weight_quant_enable");
+
+#if  EXTRACT_FULL   //2016-5-31 提取完整的参数
+  sps_weight_quant_enable = hd->weight_quant_enable_flag;
+  sps_load_seq_weight_quant_data_flag = 0;
+#endif
+
     if (hd->weight_quant_enable_flag) {
         int x, y, sizeId, uiWqMSize;
         int *Seq_WQM;
         hd->load_seq_weight_quant_data_flag        = u_v(1, "load_seq_weight_quant_data_flag");
-
+#if  EXTRACT_FULL   //2016-5-31 提取完整的参数
+    sps_load_seq_weight_quant_data_flag = hd->load_seq_weight_quant_data_flag;
+#endif
 
         for (sizeId = 0; sizeId < 2; sizeId++) {
             uiWqMSize = min(1 << (sizeId + 2), 8);
@@ -157,6 +196,9 @@ void SequenceHeader(char *buf, int startcodepos, int length)
 #endif
     hd->background_picture_enable = 0x01 ^ u_v(1, "background_picture_disable");
 
+#if  EXTRACT_FULL   //2016-5-31 提取完整的参数
+  sps_scene_picture_disable = 0x01 ^ hd->background_picture_enable;
+#endif
 
     hd->b_dmh_enabled           = 1;
 
@@ -175,6 +217,10 @@ void SequenceHeader(char *buf, int startcodepos, int length)
 
     hd->b_pmvr_enabled              = u_v(1, "pmvr enabled");
 
+#if  EXTRACT_FULL   //2016-5-31 提取完整的参数
+  sps_secondary_transform_enable_flag = hd->b_secT_enabled;
+  sps_adaptive_loop_filter_enable = input->alf_enable;
+#endif
     u_v(1, "marker bit");
 
     hd->gop_size = u_v(6, "num_of_RPS");
@@ -193,11 +239,19 @@ void SequenceHeader(char *buf, int startcodepos, int length)
         u_v(1, "marker bit");
 
     }
+#if  EXTRACT_FULL   //2016-5-31 提取完整的参数
+    sps_output_reorder_delay = 0;
+#endif
     if (hd->low_delay == 0) {
         hd->picture_reorder_delay = u_v(5, "picture_reorder_delay");
     }
 
     input->crossSliceLoopFilter = u_v(1, "Cross Loop Filter Flag");
+#if  EXTRACT_FULL   //2016-5-31 提取完整的参数
+  sps_num_of_rcs = hd->gop_size;
+  sps_output_reorder_delay = hd->picture_reorder_delay;
+  sps_cross_slice_loopfilter_enable = input->crossSliceLoopFilter;
+#endif
 
     u_v(2, "reserved bits");
 
@@ -214,6 +268,59 @@ void SequenceHeader(char *buf, int startcodepos, int length)
     img->PicSizeInMbs   = img->PicWidthInMbs * img->PicHeightInMbs;
     img->buf_cycle      = input->buf_cycle + 1;
     img->max_mb_nr      = (img->width * img->height) / (MIN_CU_SIZE * MIN_CU_SIZE);
+#if EXTRACT
+	sprintf(filename,"./%s/sps/sps_%d.txt",infile,spsNum);
+  if (p_sps != NULL)
+  {
+    fclose(p_sps);
+    p_sps = NULL;
+  }
+	if ( ( p_sps=fopen(filename,"w+"))==0)
+	{
+	  snprintf ( errortext, ET_SIZE, "Error open sequence.txt!");
+	  error ( errortext, 500 );
+	}
+#if EXTRACT_08X	
+	fprintf(p_sps,"%08X\n", input->g_uiMaxSizeInBit );//lcu_size
+	fprintf(p_sps,"%08X\n", hd->horizontal_size);
+	fprintf(p_sps,"%08X\n", hd->vertical_size);
+	fprintf(p_sps,"%08X\n", input->chroma_format);
+  
+	fprintf(p_sps,"%08X\n", input->sao_enable);
+	fprintf(p_sps,"%08X\n", hd->b_mhpskip_enabled);
+	fprintf(p_sps,"%08X\n", hd->dhp_enabled);
+	fprintf(p_sps,"%08X\n", hd->wsm_enabled);
+  
+	fprintf(p_sps,"%08X\n",img->inter_amp_enable);
+	fprintf(p_sps,"%08X\n",input->useSDIP);
+	fprintf(p_sps,"%08X\n",input->useNSQT);
+	fprintf(p_sps,"%08X\n", hd->b_pmvr_enabled);
+#endif
+
+#if EXTRACT_D	
+	fprintf(p_sps,"%d\n",input->g_uiMaxSizeInBit );//lcu_size
+	fprintf(p_sps,"%d\n", hd->horizontal_size);
+	fprintf(p_sps,"%d\n", hd->vertical_size);
+	fprintf(p_sps,"%d\n",input->chroma_format);
+  
+	fprintf(p_sps,"%d\n",input->sao_enable);
+	fprintf(p_sps,"%d\n", hd->b_mhpskip_enabled);
+	fprintf(p_sps,"%d\n", hd->dhp_enabled);
+	fprintf(p_sps,"%d\n", hd->wsm_enabled);
+  
+	fprintf(p_sps,"%d\n",img->inter_amp_enable);
+	fprintf(p_sps,"%d\n",input->useSDIP);
+	fprintf(p_sps,"%d\n",input->useNSQT);
+	fprintf(p_sps,"%d\n", hd->b_pmvr_enabled);
+#endif
+  if (p_sps != NULL)
+  {
+    fclose(p_sps);
+    p_sps = NULL;
+  }
+	spsNum++;
+	spsNewStart=1;//新的sps开始
+#endif
 
     hc->seq_header ++;
 }
@@ -239,17 +346,28 @@ void video_edit_code_data(char *buf, int startcodepos, int length)
 void I_Picture_Header(char *buf, int startcodepos, int length)
 {
     int i;
+    unsigned int tmpPPSii;
     currStream->frame_bitoffset = currStream->read_len = (startcodepos + 1) * 8;
     currStream->code_len = currStream->bitstream_length = length;
     memcpy(currStream->streamBuffer, buf, length);
 
-    u_v(32, "bbv_delay");
+    tmpPPSii = u_v(32, "bbv_delay");
+#if  EXTRACT_FULL_PPS  //2016-5-31 提取完整的参数
+    pps_bbv_delay = tmpPPSii;
+#endif
 
     hd->time_code_flag       = u_v(1, "time_code_flag");
+#if  EXTRACT_FULL_PPS  //2016-5-31 提取完整的参数
+    pps_time_code = 0;//设置初始值
+#endif
 
     if (hd->time_code_flag) {
         hd->time_code        = u_v(24, "time_code");
     }
+#if  EXTRACT_FULL_PPS  //2016-5-31 提取完整的参数
+  pps_time_code_flag = hd->time_code_flag;
+  pps_time_code = hd->time_code;
+#endif
     if (hd->background_picture_enable) {
         hd->background_picture_flag = u_v(1, "background_picture_flag");
 
@@ -267,16 +385,27 @@ void I_Picture_Header(char *buf, int startcodepos, int length)
 
     {
         img->coding_order         = u_v(8, "coding_order");
+#if  EXTRACT_FULL_PPS  //2016-5-31 提取完整的参数
+    pps_decode_order_index = img->coding_order;
+    pps_temporal_id = 0;
+    pps_picture_output_delay = 0;
+#endif
 
 
 
 #if M3480_TEMPORAL_SCALABLE
         if (hd->temporal_id_exist_flag == 1) {
             hd->cur_layer = u_v(TEMPORAL_MAXLEVEL_BIT, "temporal_id");
+#if  EXTRACT_FULL_PPS  //2016-5-31 提取完整的参数
+            pps_temporal_id = hd->cur_layer;
+#endif
         }
 #endif
         if (hd->low_delay == 0 && !(hd->background_picture_enable && !hd->background_picture_output_flag)) { //cdp
             hd->displaydelay = ue_v("picture_output_delay");
+#if  EXTRACT_FULL_PPS  //2016-5-31 提取完整的参数
+            pps_picture_output_delay = hd->displaydelay;
+#endif
         }
 
     }
@@ -284,14 +413,23 @@ void I_Picture_Header(char *buf, int startcodepos, int length)
         int RPS_idx;// = (img->coding_order-1) % gop_size;
         int predict;
         predict = u_v(1, "use RCS in SPS");
+#if  EXTRACT_FULL_PPS  //2016-5-31 提取完整的参数
+        pps_use_rcs_flag = predict;
+#endif
         if (predict) {
             RPS_idx = u_v(5, "predict for RCS");
+#if  EXTRACT_FULL_PPS  //2016-5-31 提取完整的参数
+            pps_rcs_index = RPS_idx;
+#endif
             hd->curr_RPS = hd->decod_RPS[RPS_idx];
         } else {
             //gop size16
             int j;
             hd->curr_RPS.referd_by_others = u_v(1, "refered by others");
             hd->curr_RPS.num_of_ref = u_v(3, "num of reference picture");
+#if  EXTRACT_FULL_PPS  //2016-5-31 提取完整的参数
+            pps_rcs_index = sps_num_of_rcs;
+#endif
             for (j = 0; j < hd->curr_RPS.num_of_ref; j++) {
                 hd->curr_RPS.ref_pic[j] = u_v(6, "delta COI of ref pic");
             }
@@ -404,6 +542,132 @@ void I_Picture_Header(char *buf, int startcodepos, int length)
 
     img->type              = I_IMG;
 
+#if EXTRACT
+    sprintf(filename, "./%s/PicInfo/picture_%04d.txt", infile, img->coding_order);
+    if (p_pps != NULL)
+    {
+      fclose(p_pps);
+      p_pps = NULL;
+    }
+    if ((p_pps = fopen(filename, "w+")) == 0)
+    {
+      snprintf(errortext, ET_SIZE, "Error open PicInfo/picture_%04d.txt!", img->coding_order);
+      error(errortext, 500);
+    }
+
+    sprintf(filename, "./%s/sps/sps_%04d.txt", infile, img->coding_order);
+    if (p_pic_sps != NULL)
+    {
+      fclose(p_pic_sps);
+      p_pic_sps = NULL;
+    }
+    if ((p_pic_sps = fopen(filename, "w+")) == 0)
+    {
+      snprintf(errortext, ET_SIZE, "Error open sps/sps_%04d.txt!", img->coding_order);
+      error(errortext, 500);
+    }
+#if EXTRACT_PIC_SAO   //2016-5-20 提取整帧的sao最后参数
+    sprintf(filename, "./%s/saoinfo/pic_%04d.txt", infile, img->coding_order);
+    if ((p_pic_sao = fopen(filename, "w+")) == 0)
+    {
+      snprintf(errortext, ET_SIZE, "Error open saoinfo/pic_%04d.txt!", img->coding_order);
+      error(errortext, 500);
+    }
+#endif
+    sprintf(filename, "./%s/mv_refinfo/picture_%04d.txt", infile, img->coding_order);
+    if (p_mv_col != NULL)
+    {
+      fclose(p_mv_col);
+      p_mv_col = NULL;
+    }
+    if ((p_mv_col = fopen(filename, "w+")) == 0)
+    {
+      snprintf(errortext, ET_SIZE, "Error open mv_refinfo/picture_%04d.txt!", img->coding_order);
+      error(errortext, 500);
+    }
+#if EXTRACT_08X	
+    fprintf(p_pic_sps, "%08X\n", input->g_uiMaxSizeInBit);//lcu_size
+    fprintf(p_pic_sps, "%08X\n", hd->horizontal_size);
+    fprintf(p_pic_sps, "%08X\n", hd->vertical_size);
+    fprintf(p_pic_sps, "%08X\n", input->chroma_format);
+
+    fprintf(p_pic_sps, "%08X\n", input->sao_enable);
+    fprintf(p_pic_sps, "%08X\n", hd->b_mhpskip_enabled);
+    fprintf(p_pic_sps, "%08X\n", hd->dhp_enabled);
+    fprintf(p_pic_sps, "%08X\n", hd->wsm_enabled);
+
+    fprintf(p_pic_sps, "%08X\n", img->inter_amp_enable);
+    fprintf(p_pic_sps, "%08X\n", input->useSDIP);
+    fprintf(p_pic_sps, "%08X\n", input->useNSQT);
+    fprintf(p_pic_sps, "%08X\n", hd->b_pmvr_enabled);
+#if  EXTRACT_FULL   //2016-5-31 提取完整的参数
+    fprintf(p_pic_sps, "%08X\n", input->profile_id);
+    fprintf(p_pic_sps, "%08X\n", input->level_id);
+    fprintf(p_pic_sps, "%08X\n", sps_progressive_sequence);
+    fprintf(p_pic_sps, "%08X\n", sps_field_coded_sequence);
+    fprintf(p_pic_sps, "%08X\n", sps_sample_precision);
+    fprintf(p_pic_sps, "%08X\n", sps_encoding_precision);
+    fprintf(p_pic_sps, "%08X\n", sps_aspect_ratio);
+    fprintf(p_pic_sps, "%08X\n", sps_frame_rate_code);
+
+    fprintf(p_pic_sps, "%08X\n", sps_bit_rate);
+    fprintf(p_pic_sps, "%08X\n", sps_low_delay);
+    fprintf(p_pic_sps, "%08X\n", sps_temporal_id_enable);
+    fprintf(p_pic_sps, "%08X\n", sps_bbv_buffer_size);
+    fprintf(p_pic_sps, "%08X\n", sps_weight_quant_enable);
+    fprintf(p_pic_sps, "%08X\n", sps_load_seq_weight_quant_data_flag);
+    fprintf(p_pic_sps, "%08X\n", sps_scene_picture_disable);
+    fprintf(p_pic_sps, "%08X\n", sps_secondary_transform_enable_flag);
+
+    fprintf(p_pic_sps, "%08X\n", sps_adaptive_loop_filter_enable);
+    fprintf(p_pic_sps, "%08X\n", sps_num_of_rcs);
+    fprintf(p_pic_sps, "%08X\n", sps_output_reorder_delay);
+    fprintf(p_pic_sps, "%08X\n", sps_cross_slice_loopfilter_enable);
+#endif 
+    if (p_pic_sps != NULL)
+    {
+      fclose(p_pic_sps);
+      p_pic_sps = NULL;
+    }
+#endif	
+    //spsNewStart=1
+    spsNewStart = 0;
+#if EXTRACT_08X
+    fprintf(p_pps, "%08X\n", spsNewStart);
+    fprintf(p_pps, "%08X\n", 0);
+#endif
+
+#if EXTRACT_D
+    fprintf(p_pps, "spsNewStart %d\n", spsNewStart);
+    fprintf(p_pps, "Intra %d\n", 0);
+#endif
+
+    sprintf(newdir, "./%s/lcu_info/pic_%04d", infile, img->coding_order);
+    //system(newdir);
+    mkdir(newdir, 0777);
+    printf("creat dir:%s\n", newdir);
+
+
+#if EXTRACT_lcu_info_debug  //控制lcu debug信息是否打印
+    sprintf(newdir, "./%s/lcu_debug/pic_%04d", infile, img->coding_order);
+    //system(newdir);
+    mkdir(newdir, 0777);
+    printf("creat dir:%s\n", newdir);
+#endif
+
+
+    sprintf(newdir, "./%s/lcu_coeff/pic_%04d", infile, img->coding_order);
+    //system(newdir);
+    mkdir(newdir, 0777);
+    printf("creat dir:%s\n", newdir);
+
+    sprintf(newdir, "./%s/lcu_mv/pic_%04d", infile, img->coding_order);
+    //system(newdir);
+    mkdir(newdir, 0777);
+    printf("creat dir:%s\n", newdir);
+
+    sliceNum = -1;
+#endif  
 }
 
 /*
@@ -418,14 +682,21 @@ void I_Picture_Header(char *buf, int startcodepos, int length)
 void PB_Picture_Header(char *buf, int startcodepos, int length)
 {
     int i;
+    int tmpPPSi32;
     currStream->frame_bitoffset = currStream->read_len = (startcodepos + 1) * 8;
     currStream->code_len = currStream->bitstream_length = length;
     memcpy(currStream->streamBuffer, buf, length);
 
-    u_v(32, "bbv delay");
+    tmpPPSi32=u_v(32, "bbv delay");
+#if  EXTRACT_FULL_PPS  //2016-5-31 提取完整的参数
+    pps_bbv_delay = tmpPPSi32;
+#endif
 
     hd->picture_coding_type       = u_v(2, "picture_coding_type");
 
+#if  EXTRACT_FULL_PPS  //2016-5-31 提取完整的参数
+ 	  pps_time_code = 0;//设置初始值
+#endif
     if (hd->background_picture_enable && (hd->picture_coding_type == 1 || hd->picture_coding_type == 3)) {
         if (hd->picture_coding_type == 1) {
             hd->background_pred_flag      = u_v(1, "background_pred_flag");
@@ -462,33 +733,57 @@ void PB_Picture_Header(char *buf, int startcodepos, int length)
         img->typeb = 0;
     }
 
+#if  EXTRACT_FULL_PPS  //2016-5-31 提取完整的参数
+  pps_time_code_flag = 0;//帧间帧中 不存在该句法，设置为0
+  pps_time_code = 0;//帧间帧中 不存在该句法，设置为0
+#endif
 
     {
         img->coding_order         = u_v(8, "coding_order");
+#if  EXTRACT_FULL_PPS  //2016-5-31 提取完整的参数
+        pps_decode_order_index = img->coding_order;
+        pps_temporal_id = 0;
+        pps_picture_output_delay = 0;
+#endif	  
 
 
 #if M3480_TEMPORAL_SCALABLE
         if (hd->temporal_id_exist_flag == 1) {
             hd->cur_layer = u_v(TEMPORAL_MAXLEVEL_BIT, "temporal_id");
+#if  EXTRACT_FULL_PPS  //2016-5-31 提取完整的参数
+      pps_temporal_id = hd->cur_layer;
+#endif   
         }
 #endif
 
         if (hd->low_delay == 0) {
             hd->displaydelay = ue_v("displaydelay");
+#if  EXTRACT_FULL_PPS  //2016-5-31 提取完整的参数
+      pps_picture_output_delay = hd->displaydelay;
+#endif      
         }
     }
     {
         int RPS_idx;// = (img->coding_order-1) % gop_size;
         int predict;
         predict = u_v(1, "use RPS in SPS");
+#if  EXTRACT_FULL_PPS  //2016-5-31 提取完整的参数
+    pps_use_rcs_flag = predict;
+#endif    
         if (predict) {
             RPS_idx = u_v(5, "predict for RPS");
             hd->curr_RPS = hd->decod_RPS[RPS_idx];
+#if  EXTRACT_FULL_PPS  //2016-5-31 提取完整的参数
+      pps_rcs_index = RPS_idx;
+#endif      
         } else {
             //gop size16
             int j;
             hd->curr_RPS.referd_by_others = u_v(1, "refered by others");
             hd->curr_RPS.num_of_ref = u_v(3, "num of reference picture");
+#if  EXTRACT_FULL_PPS  //2016-5-31 提取完整的参数
+      		  pps_rcs_index = sps_num_of_rcs;
+#endif      
             for (j = 0; j < hd->curr_RPS.num_of_ref; j++) {
                 hd->curr_RPS.ref_pic[j] = u_v(6, "delta COI of ref pic");
             }
@@ -549,6 +844,12 @@ void PB_Picture_Header(char *buf, int startcodepos, int length)
             input->beta_offset  = 0;
         }
     }
+
+#if  EXTRACT_FULL_PPS  //2016-5-31 提取完整的参数
+  pps_loop_filter_disable = hd->loop_filter_disable;
+  pps_AlphaCOffset  = input->alpha_c_offset;
+  pps_BetaOffset    = input->alpha_c_offset;
+#endif
 #if CHROMA_DELTA_QP
     hd->chroma_quant_param_disable = u_v(1, "chroma_quant_param_disable");
     if (!hd->chroma_quant_param_disable) {
@@ -558,6 +859,10 @@ void PB_Picture_Header(char *buf, int startcodepos, int length)
         hd->chroma_quant_param_delta_u = 0;
         hd->chroma_quant_param_delta_v = 0;
     }
+#if  EXTRACT_FULL_PPS  //2016-5-31 提取完整的参数
+  pps_chroma_quant_param_delta_cb = hd->chroma_quant_param_delta_u;
+  pps_chroma_quant_param_delta_cr = hd->chroma_quant_param_delta_v;
+#endif
 #endif
     // Adaptive frequency weighting quantization
 #if FREQUENCY_WEIGHTING_QUANTIZATION
@@ -605,6 +910,139 @@ void PB_Picture_Header(char *buf, int startcodepos, int length)
 #endif
 
     img->qp                = hd->picture_qp;
+
+#if EXTRACT
+  if(hd->picture_coding_type == 1 && hd->background_pred_flag)
+		RefPicNum=1;//BP_IMG->S_IMG
+	else 
+		RefPicNum= hd->curr_RPS.num_of_ref;
+  sprintf(filename,"./%s/PicInfo/picture_%04d.txt",infile,img->coding_order); if (p_pps != NULL)
+  {
+    fclose(p_pps);
+    p_pps = NULL;
+  }
+	if( ( p_pps=fopen(filename,"w+"))==0 )
+	{
+		 snprintf ( errortext, ET_SIZE, "Error open PicInfo/picture_%04d.txt!",img->coding_order);
+         error ( errortext, 500 );
+	}
+	
+	sprintf(filename,"./%s/sps/sps_%04d.txt",infile,img->coding_order);
+  if (p_pic_sps != NULL)
+  {
+    fclose(p_pic_sps);
+    p_pic_sps = NULL;
+  }
+	if( ( p_pic_sps=fopen(filename,"w+"))==0 )
+	{
+		 snprintf ( errortext, ET_SIZE, "Error open sps/sps_%04d.txt!",img->coding_order);
+		 error ( errortext, 500 );
+	}
+	
+#if EXTRACT_PIC_SAO   //2016-5-20 提取整帧的sao最后参数
+		sprintf(filename,"./%s/saoinfo/pic_%04d.txt",infile,img->coding_order);
+		if( ( p_pic_sao=fopen(filename,"w+"))==0 )
+		{
+			 snprintf ( errortext, ET_SIZE, "Error open saoinfo/pic_%04d.txt!",img->coding_order);
+			 error ( errortext, 500 );
+		}
+#endif
+
+	sprintf(filename,"./%s/mv_refinfo/picture_%04d.txt",infile,img->coding_order);
+  if (p_mv_col != NULL)
+  {
+    fclose(p_mv_col);
+    p_mv_col = NULL;
+  }
+	if( ( p_mv_col=fopen(filename,"w+"))==0 )
+	{
+		 snprintf ( errortext, ET_SIZE, "Error open mv_refinfo/picture_%04d.txt!",img->coding_order);
+         error ( errortext, 500 );
+	}
+#if EXTRACT_08X	
+	fprintf(p_pic_sps,"%08X\n",input->g_uiMaxSizeInBit );//lcu_size
+	fprintf(p_pic_sps,"%08X\n", hd->horizontal_size);
+	fprintf(p_pic_sps,"%08X\n", hd->vertical_size);
+	fprintf(p_pic_sps,"%08X\n",input->chroma_format);
+  
+	fprintf(p_pic_sps,"%08X\n",input->sao_enable);
+	fprintf(p_pic_sps,"%08X\n", hd->b_mhpskip_enabled);
+	fprintf(p_pic_sps,"%08X\n", hd->dhp_enabled);
+	fprintf(p_pic_sps,"%08X\n", hd->wsm_enabled);
+  
+	fprintf(p_pic_sps,"%08X\n",img->inter_amp_enable);
+	fprintf(p_pic_sps,"%08X\n",input->useSDIP);
+	fprintf(p_pic_sps,"%08X\n",input->useNSQT);
+	fprintf(p_pic_sps,"%08X\n", hd->b_pmvr_enabled);
+
+#if  EXTRACT_FULL   //2016-5-31 提取完整的参数
+  fprintf(p_pic_sps, "%08X\n", input->profile_id);
+  fprintf(p_pic_sps, "%08X\n", input->level_id);
+  fprintf(p_pic_sps, "%08X\n", sps_progressive_sequence);
+  fprintf(p_pic_sps, "%08X\n", sps_field_coded_sequence);
+  fprintf(p_pic_sps, "%08X\n", sps_sample_precision);
+  fprintf(p_pic_sps, "%08X\n", sps_encoding_precision);
+  fprintf(p_pic_sps, "%08X\n", sps_aspect_ratio);
+  fprintf(p_pic_sps, "%08X\n", sps_frame_rate_code);
+
+  fprintf(p_pic_sps, "%08X\n", sps_bit_rate);
+  fprintf(p_pic_sps, "%08X\n", sps_low_delay);
+  fprintf(p_pic_sps, "%08X\n", sps_temporal_id_enable);
+  fprintf(p_pic_sps, "%08X\n", sps_bbv_buffer_size);
+  fprintf(p_pic_sps, "%08X\n", sps_weight_quant_enable);
+  fprintf(p_pic_sps, "%08X\n", sps_load_seq_weight_quant_data_flag);
+  fprintf(p_pic_sps, "%08X\n", sps_scene_picture_disable);
+  fprintf(p_pic_sps, "%08X\n", sps_secondary_transform_enable_flag);
+
+  fprintf(p_pic_sps, "%08X\n", sps_adaptive_loop_filter_enable);
+  fprintf(p_pic_sps, "%08X\n", sps_num_of_rcs);
+  fprintf(p_pic_sps, "%08X\n", sps_output_reorder_delay);
+  fprintf(p_pic_sps, "%08X\n", sps_cross_slice_loopfilter_enable);
+#endif
+  if (p_pic_sps != NULL)
+  {
+    fclose(p_pic_sps);
+    p_pic_sps = NULL;
+  }
+#endif	
+
+#if EXTRACT_08X
+  fprintf(p_pps,"%08X\n",spsNewStart);
+	fprintf(p_pps,"%08X\n",1);
+#endif
+
+#if EXTRACT_D
+  fprintf(p_pps,"%d\n",spsNewStart);
+	fprintf(p_pps,"%d\n",1);
+#endif
+
+  spsNewStart=0;
+
+  sprintf(newdir,"./%s/lcu_info/pic_%04d",infile,img->coding_order);
+  //system(newdir);
+  mkdir(newdir,0777);
+  printf("creat dir:%s\n",newdir);
+
+#if EXTRACT_lcu_info_debug  //控制lcu debug信息是否打印
+		sprintf(newdir,"./%s/lcu_debug/pic_%04d",infile,img->coding_order);
+		//system(newdir);
+		mkdir(newdir,0777);
+		printf("creat dir:%s\n",newdir);
+#endif
+
+  sprintf(newdir,"./%s/lcu_coeff/pic_%04d",infile,img->coding_order);
+  //system(newdir);
+  mkdir(newdir,0777);
+  printf("creat dir:%s\n",newdir);
+
+  sprintf(newdir,"./%s/lcu_mv/pic_%04d",infile,img->coding_order);
+  //system(newdir);
+  mkdir(newdir,0777);
+  printf("creat dir:%s\n",newdir);
+
+
+  sliceNum=-1;
+#endif  
 }
 /*
 *************************************************************************
@@ -981,7 +1419,9 @@ void SliceHeader(char *buf, int startcodepos, int length)
 
     currStream->read_len = currStream->frame_bitoffset = (startcodepos) * 8;
     hd->slice_vertical_position              = u_v(8, "slice vertical position");
-
+#if EXTRACT
+	etr_slice_vertical_position=hd->slice_vertical_position;
+#endif
     if (hd->vertical_size > (144 * (1 << input->g_uiMaxSizeInBit))) {
         hd->slice_vertical_position_extension = u_v(3, "slice vertical position extension");
     }
@@ -993,6 +1433,10 @@ void SliceHeader(char *buf, int startcodepos, int length)
     }
 
     hd->slice_horizontal_positon = u_v(8, "slice horizontal position");
+
+#if EXTRACT
+	etr_slice_horizontal_position=hd->slice_horizontal_positon;
+#endif	
     if (img->width > (255 * (1 << input->g_uiMaxSizeInBit))) {
         hd->slice_horizontal_positon_extension = u_v(2, "slice horizontal position extension");
     }
@@ -1019,7 +1463,21 @@ void SliceHeader(char *buf, int startcodepos, int length)
         img->slice_sao_on[0] = u_v(1, "sao_slice_flag_Y");
         img->slice_sao_on[1] = u_v(1, "sao_slice_flag_Cb");
         img->slice_sao_on[2] = u_v(1, "sao_slice_flag_Cr");
+
+#if  EXTRACT_FULL_SLICE  //2016-5-31 提取完整的参数
+    slice_slice_sao_enable[0] = img->slice_sao_on[0];
+    slice_slice_sao_enable[1] = img->slice_sao_on[1];
+    slice_slice_sao_enable[2] = img->slice_sao_on[2];
+#endif
     }
+#if  EXTRACT_FULL_SLICE  //2016-5-31 提取完整的参数
+  else 
+  {
+    slice_slice_sao_enable[0] = 0;
+    slice_slice_sao_enable[1] = 0;
+    slice_slice_sao_enable[2] = 0;
+  }
+#endif
 
     {
         int i, j;
@@ -1031,6 +1489,7 @@ void SliceHeader(char *buf, int startcodepos, int length)
     }
 }
 
+ 
 //Lou
 int sign(int a , int b)
 {
