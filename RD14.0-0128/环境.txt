@@ -1,0 +1,7 @@
+K:\AVS2\官方代码\RD14.0-0128
+/disk3T0/VideoCodec/cmodel_verify/AVS2/codes/RD14.0-0128
+cd /disk3T0/VideoCodec/cmodel_verify/AVS2/codes/RD14.0-0128/ldecod
+ cd ../ldecod && make && cd ../bin && ./ldecod.exe
+ cd ../ldecod && make 2>make.log && cat make.log |grep erro
+ 
+ /disk3T0/VideoCodec/cmodel_verify/AVS2/codes/RD14.0-0128/bin/test

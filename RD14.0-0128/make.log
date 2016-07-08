@@ -1,0 +1,447 @@
+In file included from src/../../lcommon/inc/commonVariables.h:49,
+                 from src/AEC.c:41:
+src/../../lcommon/inc/commonStructures.h:76: warning: useless storage class specifier in empty declaration
+src/../../lcommon/inc/commonStructures.h:82: warning: useless storage class specifier in empty declaration
+src/../../lcommon/inc/commonStructures.h:88: warning: useless storage class specifier in empty declaration
+src/../../lcommon/inc/commonStructures.h:119: warning: useless storage class specifier in empty declaration
+src/../../lcommon/inc/commonStructures.h:141: warning: useless storage class specifier in empty declaration
+src/../../lcommon/inc/commonStructures.h:149: warning: useless storage class specifier in empty declaration
+src/../../lcommon/inc/commonStructures.h:157: warning: useless storage class specifier in empty declaration
+src/../../lcommon/inc/commonStructures.h:164: warning: useless storage class specifier in empty declaration
+src/../../lcommon/inc/commonStructures.h:175: warning: useless storage class specifier in empty declaration
+src/AEC.c: In function ‘readDmhMode’:
+src/AEC.c:155: warning: unused variable ‘d’
+src/AEC.c: In function ‘readMVD’:
+src/AEC.c:219: warning: unused variable ‘block_b’
+src/AEC.c:219: warning: unused variable ‘block_a’
+src/AEC.c:214: warning: unused variable ‘list_idx’
+src/AEC.c:212: warning: unused variable ‘mv_local_err’
+src/AEC.c:209: warning: unused variable ‘a’
+src/AEC.c:208: warning: unused variable ‘j’
+src/AEC.c:207: warning: unused variable ‘i’
+src/AEC.c: In function ‘readcuTypeInfo_SDIP’:
+src/AEC.c:996: warning: unused variable ‘max_bit’
+src/AEC.c: In function ‘readRefFrame’:
+src/AEC.c:1453: warning: unused variable ‘bw_flag’
+src/AEC.c:1449: warning: unused variable ‘block_b’
+src/AEC.c:1449: warning: unused variable ‘block_a’
+src/AEC.c:1447: warning: unused variable ‘b8b’
+src/AEC.c:1447: warning: unused variable ‘b8a’
+src/AEC.c:1446: warning: unused variable ‘refframe_array’
+src/AEC.c:1443: warning: unused variable ‘b’
+src/AEC.c:1443: warning: unused variable ‘a’
+src/AEC.c: In function ‘readCBP_BIT_AEC’:
+src/AEC.c:1618: warning: suggest parentheses around ‘&&’ within ‘||’
+src/AEC.c:1618: warning: suggest parentheses around ‘&&’ within ‘||’
+src/AEC.c:1619: warning: suggest parentheses around ‘&&’ within ‘||’
+src/AEC.c:1619: warning: suggest parentheses around ‘&&’ within ‘||’
+src/AEC.c:1699: warning: suggest parentheses around ‘&&’ within ‘||’
+src/AEC.c:1699: warning: suggest parentheses around ‘&&’ within ‘||’
+src/AEC.c:1700: warning: suggest parentheses around ‘&&’ within ‘||’
+src/AEC.c:1700: warning: suggest parentheses around ‘&&’ within ‘||’
+src/AEC.c:1740: warning: suggest parentheses around ‘&&’ within ‘||’
+src/AEC.c:1740: warning: suggest parentheses around ‘&&’ within ‘||’
+src/AEC.c:1741: warning: suggest parentheses around ‘&&’ within ‘||’
+src/AEC.c:1741: warning: suggest parentheses around ‘&&’ within ‘||’
+src/AEC.c: In function ‘readRunLevelRef’:
+src/AEC.c:2363: warning: unused variable ‘numCGminus1’
+src/AEC.c:2257: warning: unused variable ‘pos2RunCtx’
+src/AEC.c:2222: warning: unused variable ‘raster2ZZ_2x2’
+src/AEC.c: In function ‘read_sao_type’:
+src/AEC.c:3511: warning: unused variable ‘i’
+src/AEC.c: In function ‘read_sao_type_AEC’:
+src/AEC.c:3542: warning: unused variable ‘cmax’
+src/AEC.c:3538: warning: unused variable ‘ctx’
+src/AEC.c: In function ‘readAlfCoeff’:
+src/AEC.c:3626: warning: implicit declaration of function ‘se_v’
+src/AEC.c:3632: warning: implicit declaration of function ‘ue_v’
+src/AEC.c: At top level:
+inc/global.h:510: warning: ‘alfParAllcoated’ defined but not used
+src/AEC.c: In function ‘read_sao_mergeflag_AEC’:
+src/AEC.c:3352: warning: ‘act_sym’ may be used uninitialized in this function
+In file included from inc/global.h:53,
+                 from src/b_frame.c:54:
+inc/../../lcommon/inc/commonStructures.h:76: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:82: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:88: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:119: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:141: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:149: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:157: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:164: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:175: warning: useless storage class specifier in empty declaration
+inc/global.h:510: warning: ‘alfParAllcoated’ defined but not used
+In file included from inc/global.h:53,
+                 from src/biaridecod.c:40:
+inc/../../lcommon/inc/commonStructures.h:76: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:82: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:88: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:119: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:141: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:149: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:157: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:164: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:175: warning: useless storage class specifier in empty declaration
+inc/global.h:510: warning: ‘alfParAllcoated’ defined but not used
+In file included from inc/global.h:53,
+                 from src/bitstream.c:51:
+inc/../../lcommon/inc/commonStructures.h:76: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:82: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:88: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:119: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:141: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:149: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:157: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:164: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:175: warning: useless storage class specifier in empty declaration
+src/bitstream.c: In function ‘GetOneUnit’:
+src/bitstream.c:506: warning: format ‘%04d’ expects type ‘int’, but argument 4 has type ‘char *’
+src/bitstream.c:506: warning: too many arguments for format
+src/bitstream.c:506: warning: format ‘%04d’ expects type ‘int’, but argument 4 has type ‘char *’
+src/bitstream.c:506: warning: too many arguments for format
+src/bitstream.c: At top level:
+inc/global.h:510: warning: ‘alfParAllcoated’ defined but not used
+src/bitstream.c: In function ‘NextStartCode’:
+src/bitstream.c:138: warning: ‘a’ may be used uninitialized in this function
+src/bitstream.c:138: warning: ‘b’ may be used uninitialized in this function
+In file included from src/../../lcommon/inc/commonVariables.h:49,
+                 from src/block.c:57:
+src/../../lcommon/inc/commonStructures.h:76: warning: useless storage class specifier in empty declaration
+src/../../lcommon/inc/commonStructures.h:82: warning: useless storage class specifier in empty declaration
+src/../../lcommon/inc/commonStructures.h:88: warning: useless storage class specifier in empty declaration
+src/../../lcommon/inc/commonStructures.h:119: warning: useless storage class specifier in empty declaration
+src/../../lcommon/inc/commonStructures.h:141: warning: useless storage class specifier in empty declaration
+src/../../lcommon/inc/commonStructures.h:149: warning: useless storage class specifier in empty declaration
+src/../../lcommon/inc/commonStructures.h:157: warning: useless storage class specifier in empty declaration
+src/../../lcommon/inc/commonStructures.h:164: warning: useless storage class specifier in empty declaration
+src/../../lcommon/inc/commonStructures.h:175: warning: useless storage class specifier in empty declaration
+src/block.c: In function ‘intrapred’:
+src/block.c:539: warning: unused variable ‘NumMBWidthInBlk2’
+src/block.c:538: warning: unused variable ‘NumMBWidthInBlk1’
+src/block.c:532: warning: unused variable ‘MBRowSize’
+src/block.c: At top level:
+inc/global.h:510: warning: ‘alfParAllcoated’ defined but not used
+src/block.c:74: warning: ‘iEBuff’ defined but not used
+src/block.c: In function ‘get_curr_blk’:
+src/block.c:412: warning: ‘iSizeX’ may be used uninitialized in this function
+src/block.c:412: warning: ‘iSizeY’ may be used uninitialized in this function
+src/block.c:413: warning: ‘iStartX’ may be used uninitialized in this function
+src/block.c:413: warning: ‘iStartY’ may be used uninitialized in this function
+src/block.c: In function ‘idct_dequant_B8_NSQT’:
+src/block.c:300: warning: ‘iSizeX’ may be used uninitialized in this function
+src/block.c:300: warning: ‘iSizeY’ may be used uninitialized in this function
+src/block.c:301: warning: ‘iStartX’ may be used uninitialized in this function
+src/block.c:301: warning: ‘iStartY’ may be used uninitialized in this function
+In file included from inc/global.h:53,
+                 from src/codingUnit.c:57:
+inc/../../lcommon/inc/commonStructures.h:76: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:82: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:88: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:119: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:141: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:149: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:157: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:164: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:175: warning: useless storage class specifier in empty declaration
+src/codingUnit.c: In function ‘SetMotionVectorPredictor’:
+src/codingUnit.c:297: warning: suggest parentheses around ‘&&’ within ‘||’
+src/codingUnit.c:318: warning: suggest parentheses around ‘&&’ within ‘||’
+src/codingUnit.c:339: warning: suggest parentheses around ‘&&’ within ‘||’
+src/codingUnit.c:360: warning: suggest parentheses around ‘&&’ within ‘||’
+src/codingUnit.c:605: warning: suggest parentheses around ‘&&’ within ‘||’
+src/codingUnit.c:643: warning: suggest parentheses around ‘&&’ within ‘||’
+src/codingUnit.c: In function ‘PskipMV_COL’:
+src/codingUnit.c:1533: warning: unused variable ‘col_mv_scaled’
+src/codingUnit.c:1533: warning: unused variable ‘cur_mv_scaled’
+src/codingUnit.c:1532: warning: unused variable ‘neiT’
+src/codingUnit.c:1526: warning: unused variable ‘cur_ref’
+src/codingUnit.c:1525: warning: unused variable ‘blockshape_mb_y’
+src/codingUnit.c:1524: warning: unused variable ‘blockshape_mb_x’
+src/codingUnit.c:1521: warning: unused variable ‘pic_pix_y’
+src/codingUnit.c:1520: warning: unused variable ‘pic_pix_x’
+src/codingUnit.c: In function ‘setPSkipMotionVector’:
+src/codingUnit.c:1665: warning: unused variable ‘sym_flag’
+src/codingUnit.c:1665: warning: unused variable ‘bw_flag’
+src/codingUnit.c: In function ‘read_CBP’:
+src/codingUnit.c:3221: warning: unused variable ‘fixqp’
+src/codingUnit.c: In function ‘fill_P_Skip_for_MH’:
+src/codingUnit.c:3809: warning: suggest parentheses around ‘+’ inside ‘>>’
+src/codingUnit.c:3810: warning: suggest parentheses around ‘+’ inside ‘>>’
+src/codingUnit.c:3825: warning: suggest parentheses around ‘+’ inside ‘>>’
+src/codingUnit.c:3778: warning: unused variable ‘N8_SizeScale’
+src/codingUnit.c:3770: warning: unused variable ‘tmp_mv’
+src/codingUnit.c: In function ‘fill_blockMV’:
+src/codingUnit.c:3929: warning: suggest parentheses around ‘+’ inside ‘>>’
+src/codingUnit.c:3930: warning: suggest parentheses around ‘+’ inside ‘>>’
+src/codingUnit.c:3945: warning: suggest parentheses around ‘+’ inside ‘>>’
+src/codingUnit.c: In function ‘read_SubMB’:
+src/codingUnit.c:4332: warning: unused variable ‘currMB_pix_height’
+src/codingUnit.c:4331: warning: unused variable ‘pix_y_InSMB’
+src/codingUnit.c:4330: warning: unused variable ‘pix_x_InSMB’
+src/codingUnit.c: In function ‘decode_SMB’:
+src/codingUnit.c:5035: warning: too many arguments for format
+src/codingUnit.c:5355: warning: too many arguments for format
+src/codingUnit.c:5490: warning: too many arguments for format
+src/codingUnit.c: In function ‘readReferenceIndex’:
+src/codingUnit.c:6044: warning: unused variable ‘N8_SizeScale’
+src/codingUnit.c: In function ‘readBlockCoeffs’:
+src/codingUnit.c:8149: warning: unused variable ‘coefjj’
+src/codingUnit.c:8149: warning: unused variable ‘coefii’
+src/codingUnit.c:7061: warning: unused variable ‘CurrentChromaQP’
+src/codingUnit.c: In function ‘decode_one_InterLumaBlock’:
+src/codingUnit.c:8353: warning: suggest parentheses around ‘+’ inside ‘>>’
+src/codingUnit.c:8354: warning: suggest parentheses around ‘+’ inside ‘>>’
+src/codingUnit.c:8369: warning: suggest parentheses around ‘+’ inside ‘>>’
+src/codingUnit.c:8627: warning: unused variable ‘y’
+src/codingUnit.c:8627: warning: unused variable ‘x’
+src/codingUnit.c:8741: warning: unused variable ‘y’
+src/codingUnit.c:8741: warning: unused variable ‘x’
+src/codingUnit.c:8277: warning: unused variable ‘ttPredDirStr’
+src/codingUnit.c:8276: warning: unused variable ‘ttPicTypeStr’
+src/codingUnit.c:8260: warning: unused variable ‘puNumInCU’
+src/codingUnit.c: In function ‘decode_one_IntraChromaBlock’:
+src/codingUnit.c:8767: warning: unused variable ‘j’
+src/codingUnit.c: In function ‘decode_one_InterChromaBlock’:
+src/codingUnit.c:9268: warning: suggest parentheses around ‘+’ inside ‘>>’
+src/codingUnit.c:9115: warning: unused variable ‘mpr_tmp’
+src/codingUnit.c:9114: warning: unused variable ‘k’
+src/codingUnit.c:9100: warning: unused variable ‘fw_pred’
+src/codingUnit.c:9100: warning: unused variable ‘bw_pred’
+src/codingUnit.c: At top level:
+inc/global.h:510: warning: ‘alfParAllcoated’ defined but not used
+src/codingUnit.c: In function ‘setPSkipMotionVector’:
+src/codingUnit.c:1660: warning: ‘upright’ may be used uninitialized in this function
+src/codingUnit.c: In function ‘interpret_mb_mode_B’:
+src/codingUnit.c:2206: warning: array subscript is below array bounds
+src/codingUnit.c:2137: warning: ‘mbmode’ may be used uninitialized in this function
+src/codingUnit.c: In function ‘get_chroma_subpix_blk’:
+src/codingUnit.c:9012: warning: ‘val’ may be used uninitialized in this function
+src/codingUnit.c: In function ‘decode_one_InterChromaBlock’:
+src/codingUnit.c:9122: warning: ‘p_ref2’ may be used uninitialized in this function
+src/codingUnit.c: In function ‘decode_one_InterLumaBlock’:
+src/codingUnit.c:8229: warning: ‘vec_wgt_x’ may be used uninitialized in this function
+src/codingUnit.c:8229: warning: ‘vec_wgt_y’ may be used uninitialized in this function
+src/codingUnit.c: In function ‘readBlockCoeffs’:
+src/codingUnit.c:7067: warning: ‘wqm_shift’ may be used uninitialized in this function
+src/codingUnit.c:7060: warning: ‘SCAN’ may be used uninitialized in this function
+src/codingUnit.c:7066: warning: ‘WQMSizeId’ may be used uninitialized in this function
+src/codingUnit.c:7065: warning: ‘wqm_coef’ may be used uninitialized in this function
+src/codingUnit.c:7079: warning: ‘iStartX’ may be used uninitialized in this function
+src/codingUnit.c:7079: warning: ‘iStartY’ may be used uninitialized in this function
+src/codingUnit.c: In function ‘read_ipred_block_modes’:
+src/codingUnit.c:5974: warning: ‘dec’ may be used uninitialized in this function
+src/codingUnit.c: In function ‘SetSkipMotionVectorPredictor’:
+src/codingUnit.c:790: warning: ‘upright’ may be used uninitialized in this function
+src/codingUnit.c:795: warning: ‘bid2’ may be used uninitialized in this function
+src/codingUnit.c: In function ‘SetMotionVectorPredictor’:
+src/codingUnit.c:204: warning: ‘upright’ may be used uninitialized in this function
+src/codingUnit.c: In function ‘readMotionVector’:
+src/codingUnit.c:6323: warning: ‘fw_refframe’ may be used uninitialized in this function
+src/codingUnit.c: In function ‘fill_blockMV’:
+src/codingUnit.c:4019: warning: ‘i8_1st’ may be used uninitialized in this function
+src/codingUnit.c:4020: warning: ‘j8_1st’ may be used uninitialized in this function
+src/codingUnit.c: In function ‘fill_B_Skip_block’:
+src/codingUnit.c:3468: warning: ‘i8_1st’ may be used uninitialized in this function
+src/codingUnit.c:3469: warning: ‘j8_1st’ may be used uninitialized in this function
+In file included from inc/global.h:53,
+                 from src/context_ini.c:41:
+inc/../../lcommon/inc/commonStructures.h:76: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:82: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:88: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:119: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:141: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:149: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:157: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:164: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:175: warning: useless storage class specifier in empty declaration
+inc/global.h:510: warning: ‘alfParAllcoated’ defined but not used
+In file included from inc/global.h:53,
+                 from src/DecAdaptiveLoopFilter.c:5:
+inc/../../lcommon/inc/commonStructures.h:76: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:82: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:88: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:119: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:141: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:149: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:157: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:164: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:175: warning: useless storage class specifier in empty declaration
+src/DecAdaptiveLoopFilter.c: In function ‘filterOneCTB’:
+src/DecAdaptiveLoopFilter.c:167: warning: unused variable ‘skipSize’
+src/DecAdaptiveLoopFilter.c: In function ‘CreateAlfGlobalBuffer’:
+src/DecAdaptiveLoopFilter.c:313: warning: unused variable ‘maxNumTemporalLayer’
+src/DecAdaptiveLoopFilter.c:312: warning: unused variable ‘numCoef’
+src/DecAdaptiveLoopFilter.c: In function ‘ReleaseAlfGlobalBuffer’:
+src/DecAdaptiveLoopFilter.c:425: warning: unused variable ‘maxNumTemporalLayer’
+src/DecAdaptiveLoopFilter.c:423: warning: unused variable ‘numCoef’
+src/DecAdaptiveLoopFilter.c:422: warning: unused variable ‘i’
+src/DecAdaptiveLoopFilter.c: In function ‘Read_ALF_param’:
+src/DecAdaptiveLoopFilter.c:586: warning: implicit declaration of function ‘u_v’
+src/DecAdaptiveLoopFilter.c: In function ‘deriveBoundaryAvail’:
+src/DecAdaptiveLoopFilter.c:622: warning: unused variable ‘smb_mb_height’
+src/DecAdaptiveLoopFilter.c:621: warning: unused variable ‘smb_mb_width’
+src/DecAdaptiveLoopFilter.c:612: warning: unused variable ‘img_height’
+src/DecAdaptiveLoopFilter.c: At top level:
+inc/global.h:510: warning: ‘alfParAllcoated’ defined but not used
+src/DecAdaptiveLoopFilter.c: In function ‘CreateAlfGlobalBuffer’:
+src/DecAdaptiveLoopFilter.c:322: warning: ‘alfHeight_cr’ may be used uninitialized in this function
+In file included from inc/global.h:53,
+                 from src/../../lcommon/inc/memalloc.h:52,
+                 from src/header.c:47:
+inc/../../lcommon/inc/commonStructures.h:76: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:82: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:88: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:119: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:141: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:149: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:157: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:164: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:175: warning: useless storage class specifier in empty declaration
+src/header.c: In function ‘I_Picture_Header’:
+src/header.c:699: warning: implicit declaration of function ‘mkdir’
+src/header.c: In function ‘extension_data’:
+src/header.c:1164: warning: implicit declaration of function ‘OpenPosFile’
+src/header.c:1165: warning: implicit declaration of function ‘roi_parameters_extension’
+src/header.c: In function ‘copyright_extension’:
+src/header.c:1327: warning: left shift count >= width of type
+src/header.c: In function ‘calc_picture_distance’:
+src/header.c:1469: warning: unused variable ‘MaxPicDistanceLsb’
+src/header.c: At top level:
+inc/global.h:510: warning: ‘alfParAllcoated’ defined but not used
+src/header.c: In function ‘picture_display_extension’:
+src/header.c:1264: warning: ‘NumberOfFrameCentreOffsets’ may be used uninitialized in this function
+In file included from inc/global.h:53,
+                 from src/image.c:61:
+inc/../../lcommon/inc/commonStructures.h:76: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:82: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:88: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:119: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:141: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:149: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:157: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:164: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:175: warning: useless storage class specifier in empty declaration
+src/image.c: In function ‘report_frame’:
+src/image.c:424: warning: embedded ‘\0’ in format
+src/image.c: In function ‘find_snr’:
+src/image.c:897: warning: dereferencing type-punned pointer will break strict-aliasing rules
+src/image.c:903: warning: dereferencing type-punned pointer will break strict-aliasing rules
+src/image.c:935: warning: dereferencing type-punned pointer will break strict-aliasing rules
+src/image.c:941: warning: dereferencing type-punned pointer will break strict-aliasing rules
+src/image.c:945: warning: dereferencing type-punned pointer will break strict-aliasing rules
+src/image.c:954: warning: dereferencing type-punned pointer will break strict-aliasing rules
+src/image.c:960: warning: dereferencing type-punned pointer will break strict-aliasing rules
+src/image.c:964: warning: dereferencing type-punned pointer will break strict-aliasing rules
+src/image.c:1054: warning: dereferencing type-punned pointer will break strict-aliasing rules
+src/image.c:1060: warning: dereferencing type-punned pointer will break strict-aliasing rules
+src/image.c: In function ‘find_snr_background’:
+src/image.c:1473: warning: dereferencing type-punned pointer will break strict-aliasing rules
+src/image.c:1479: warning: dereferencing type-punned pointer will break strict-aliasing rules
+src/image.c:1511: warning: dereferencing type-punned pointer will break strict-aliasing rules
+src/image.c:1517: warning: dereferencing type-punned pointer will break strict-aliasing rules
+src/image.c:1521: warning: dereferencing type-punned pointer will break strict-aliasing rules
+src/image.c:1530: warning: dereferencing type-punned pointer will break strict-aliasing rules
+src/image.c:1536: warning: dereferencing type-punned pointer will break strict-aliasing rules
+src/image.c:1540: warning: dereferencing type-punned pointer will break strict-aliasing rules
+src/image.c:1630: warning: dereferencing type-punned pointer will break strict-aliasing rules
+src/image.c:1636: warning: dereferencing type-punned pointer will break strict-aliasing rules
+src/image.c: In function ‘cleanRefMVBufRef’:
+src/image.c:2048: warning: unused variable ‘i’
+src/image.c: In function ‘prepare_RefInfo’:
+src/image.c:2443: warning: too many arguments for format
+src/image.c:2448: warning: too many arguments for format
+src/image.c:2469: warning: unused variable ‘i’
+src/image.c:2081: warning: unused variable ‘flag’
+src/image.c: In function ‘get_block’:
+src/image.c:2610: warning: unused variable ‘tmp_bgr’
+src/image.c: In function ‘Header’:
+src/image.c:2759: warning: pointer targets in assignment differ in signedness
+src/image.c:2766: warning: pointer targets in passing argument 1 of ‘GetOneUnit’ differ in signedness
+inc/annexb.h:54: note: expected ‘char *’ but argument is of type ‘unsigned char *’
+src/image.c:2773: warning: pointer targets in passing argument 1 of ‘SequenceHeader’ differ in signedness
+inc/header.h:55: note: expected ‘char *’ but argument is of type ‘unsigned char *’
+src/image.c:2784: warning: pointer targets in passing argument 1 of ‘extension_data’ differ in signedness
+inc/header.h:56: note: expected ‘char *’ but argument is of type ‘unsigned char *’
+src/image.c:2796: warning: pointer targets in passing argument 1 of ‘Read_ALF_param’ differ in signedness
+src/../../ldecod/inc/DecAdaptiveLoopFilter.h:36: note: expected ‘char *’ but argument is of type ‘unsigned char *’
+src/image.c:2853: warning: pointer targets in passing argument 1 of ‘Read_ALF_param’ differ in signedness
+src/../../ldecod/inc/DecAdaptiveLoopFilter.h:36: note: expected ‘char *’ but argument is of type ‘unsigned char *’
+src/image.c:2966: warning: pointer targets in assignment differ in signedness
+src/image.c:2756: warning: unused variable ‘j’
+src/image.c:2753: warning: unused variable ‘ext_ID’
+src/image.c:2752: warning: unused variable ‘prev_pos’
+src/image.c: In function ‘init_frame’:
+src/image.c:3001: warning: unused variable ‘first_P’
+src/image.c: In function ‘picture_data’:
+src/image.c:3127: warning: pointer targets in assignment differ in signedness
+src/image.c:3172: warning: pointer targets in passing argument 1 of ‘GetOneUnit’ differ in signedness
+inc/annexb.h:54: note: expected ‘char *’ but argument is of type ‘unsigned char *’
+src/image.c:3291: warning: suggest parentheses around ‘+’ inside ‘>>’
+src/image.c:3302: warning: suggest parentheses around ‘+’ inside ‘>>’
+src/image.c:3379: warning: unused variable ‘curSAOCr’
+src/image.c:3378: warning: unused variable ‘curSAOCb’
+src/image.c:3377: warning: unused variable ‘curSAO’
+src/image.c:3583: warning: too many arguments for format
+src/image.c:3686: warning: passing argument 1 of ‘get_mem2D’ from incompatible pointer type
+src/../../lcommon/inc/memalloc.h:58: note: expected ‘byte ***’ but argument is of type ‘int ***’
+src/image.c:3687: warning: passing argument 1 of ‘get_mem2D’ from incompatible pointer type
+src/../../lcommon/inc/memalloc.h:58: note: expected ‘byte ***’ but argument is of type ‘int ***’
+src/image.c:3709: warning: implicit declaration of function ‘SetEdgeFilter’
+src/image.c:3742: warning: passing argument 1 of ‘free_mem2D’ from incompatible pointer type
+src/../../lcommon/inc/memalloc.h:64: note: expected ‘byte **’ but argument is of type ‘int **’
+src/image.c:3743: warning: passing argument 1 of ‘free_mem2D’ from incompatible pointer type
+src/../../lcommon/inc/memalloc.h:64: note: expected ‘byte **’ but argument is of type ‘int **’
+src/image.c:3844: warning: unused variable ‘curSAOCr’
+src/image.c:3843: warning: unused variable ‘curSAOCb’
+src/image.c:3084: warning: unused variable ‘mb_width’
+src/image.c:3082: warning: unused variable ‘mb_nr’
+src/image.c: In function ‘compressMotion’:
+src/image.c:4064: warning: unused variable ‘k’
+src/image.c: In function ‘frame_postprocessing’:
+src/image.c:4203: warning: implicit declaration of function ‘BufferMD5’
+src/image.c:4122: warning: unused variable ‘pos’
+In file included from inc/global.h:53,
+                 from src/ldecod.c:112:
+inc/../../lcommon/inc/commonStructures.h:76: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:82: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:88: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:119: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:141: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:149: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:157: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:164: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:175: warning: useless storage class specifier in empty declaration
+src/ldecod.c: In function ‘mergeFld2Frm’:
+src/ldecod.c:371: warning: unused variable ‘maxSignal’
+src/ldecod.c:363: warning: unused variable ‘p_org_img’
+src/ldecod.c: In function ‘main’:
+src/ldecod.c:550: warning: implicit declaration of function ‘mkdir’
+src/ldecod.c: At top level:
+inc/global.h:510: warning: ‘alfParAllcoated’ defined but not used
+src/ldecod.c: In function ‘report’:
+src/ldecod.c:1274: warning: ‘ch’ may be used uninitialized in this function
+src/ldecod.c: In function ‘init_conf’:
+src/ldecod.c:908: warning: ‘fd’ may be used uninitialized in this function
+src/ldecod.c: In function ‘mergeFld2Frm’:
+src/ldecod.c:364: warning: ‘p_rec_img’ may be used uninitialized in this function
+src/ldecod.c:365: warning: ‘p_out_img’ may be used uninitialized in this function
+In file included from inc/global.h:53,
+                 from src/loopfilter.c:49:
+inc/../../lcommon/inc/commonStructures.h:76: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:82: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:88: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:119: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:141: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:149: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:157: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:164: warning: useless storage class specifier in empty declaration
+inc/../../lcommon/inc/commonStructures.h:175: warning: useless storage class specifier in empty declaration
+src/loopfilter.c: In function ‘xSetEdgeFilter_One_SMB’:
+src/loopfilter.c:186: warning: unused variable ‘iBoundary_end’
+src/loopfilter.c: In function ‘DeblockMb’:
+src/loopfilter.c:837: warning: suggest parentheses around ‘&&’ within ‘||’
+src/loopfilter.c:896: warning: suggest parentheses around ‘&&’ within ‘||’
+src/loopfilter.c:732: warning: unused variable ‘flag’
+src/loopfilter.c: In function ‘EdgeLoopX’:
+src/loopfilter.c:1166: error: expected ‘)’ before ‘;’ token
+make: *** [obj/loopfilter.o] Error 1
